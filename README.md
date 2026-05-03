@@ -51,6 +51,22 @@ Its job is operational:
 - remember lightweight listening preferences for future preset selection
 - avoid duplicate player processes and overlapping audio
 
+## One Hard-Won Lesson Added
+
+One real failure we hit was source switching overlap: killing only the PID saved in the skill was not enough.
+
+The reason is straightforward:
+
+- a foreground `mpv` test may never get written to the PID file
+- a later source switch may stop only the remembered background process
+- the leftover foreground `mpv` keeps playing, so the user hears two streams at once
+
+That lesson is now part of the default behavior:
+
+- source switches do not rely only on the saved PID
+- they also clear residual `mpv --no-video` processes
+- the goal is not “usually no overlap”; the goal is **no overlap by default**
+
 It can be used for:
 
 - music

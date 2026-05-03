@@ -29,6 +29,7 @@ This skill treats `yt-dlp + mpv` as the reliable fallback path.
 7. Use listening-preference memory when choosing a preset or fallback style.
 8. Start playback in a real Terminal session or a stable background process.
 9. Avoid duplicate processes. If there is already a test track and a playlist track, kill the test track.
+10. Before switching sources, clear all existing `mpv --no-video` processes owned by this workflow, not just the last saved PID.
 
 ## Source Policy For All Audio Playback
 
@@ -140,6 +141,7 @@ python3 ./scripts/radio_memory.py show
 - For all audio playback, prefer an existing public source over any locally generated narration.
 - For all audio playback, keep playback format narrow: direct terminal playback only, no browser detour.
 - For all audio playback, always leave behind at least one backup source class after the first successful source.
+- On source switches, assume the saved PID may be stale; clean residual `mpv --no-video` processes before starting the next source.
 - In AI news mode, prefer one finished public news source instead of assembling a synthetic recap.
 - Do not promise `ncm-cli` or Spotify will work if the root problem is rights or Premium.
 - Do not leave a foreground test track running after validating playback.

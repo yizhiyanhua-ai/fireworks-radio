@@ -7,6 +7,24 @@ PID_FILE="/private/tmp/fireworks-radio.pid"
 CACHE_DIR_DEFAULT="/private/tmp/fireworks-radio-cache"
 MODE="stream"
 
+cleanup_existing_players() {
+  if [[ -f "$PID_FILE" ]]; then
+    old_pid="$(cat "$PID_FILE" || true)"
+    if [[ -n "${old_pid}" ]] && kill -0 "$old_pid" 2>/dev/null; then
+      kill "$old_pid" 2>/dev/null || true
+      sleep 1
+      kill -9 "$old_pid" 2>/dev/null || true
+    fi
+    rm -f "$PID_FILE"
+  fi
+
+  # Foreground tests and direct source switches can leave extra no-video mpv
+  # processes behind. Clear them before starting a new source to prevent overlap.
+  pkill -f "mpv --no-video" 2>/dev/null || true
+  sleep 1
+  pkill -9 -f "mpv --no-video" 2>/dev/null || true
+}
+
 build_focus_ambient() {
   "$ROOT_DIR/scripts/build_playlist.sh" "$PLAYLIST_DEFAULT" \
     "Tycho Awake official audio" \
@@ -95,12 +113,7 @@ if [[ -z "$playlist" ]]; then
   exit 1
 fi
 
-if [[ -f "$PID_FILE" ]]; then
-  old_pid="$(cat "$PID_FILE" || true)"
-  if [[ -n "${old_pid}" ]] && kill -0 "$old_pid" 2>/dev/null; then
-    kill "$old_pid" 2>/dev/null || true
-  fi
-fi
+cleanup_existing_players
 
 if [[ "$MODE" == "cache" ]]; then
   mkdir -p "$cache_dir"
