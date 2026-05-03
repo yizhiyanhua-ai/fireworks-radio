@@ -46,6 +46,7 @@ Its job is operational:
 
 - recover quickly when common terminal media stacks break
 - build small explicit playlists from search queries
+- prefer existing public sources for all audio playback instead of generating new spoken content
 - support both `stream` and `cache` playback modes
 - remember lightweight listening preferences for future preset selection
 - avoid duplicate player processes and overlapping audio
@@ -178,6 +179,62 @@ fireworks-radio/
 ./scripts/play_mix.sh --auto
 ```
 
+## General Audio Source Policy
+
+This is not only for AI news. It is the default policy for all audio playback inside `fireworks-radio`.
+
+Hard rules:
+
+- use only public, currently accessible, already-published, directly playable sources
+- do not synthesize a local spoken track from web content unless the user explicitly asks
+- do not open a webpage just to get playback
+- prefer direct playback in the current terminal window
+- start with one finished source instead of stitching fake shows or fake episodes
+- after one source works, confirm at least one backup source class
+
+Allowed source types:
+
+- public YouTube videos, audio-only playback
+- public podcast RSS feeds
+- direct MP3 `enclosure` links exposed by a podcast host
+- free and public music sources where the work is already published and directly accessible
+
+Default disallowed behavior:
+
+- summarizing the web and then reading it back with local TTS
+- opening a browser page and offloading playback to the user
+- stitching unrelated web pages into a pretend program
+- drifting into article reading, newsletter summarization, or other non-playback forms unless the user explicitly asks
+
+### Music Source Guidance
+
+For music, this skill may prefer free and public source classes such as:
+
+- `ccMixter`
+- `Free Music Archive`
+- `Musopen`
+- `Open Music Archive`
+
+That still does not mean every track grants every downstream use. Per-track rights and platform rules still matter.
+
+## AI News Mode
+
+AI news is only a narrower sub-mode under the global source policy above:
+
+- prefer public YouTube AI news videos through `mpv --no-video`
+- if YouTube is unreliable, prefer public podcast RSS / MP3 `enclosure`
+- if both fail, explain the failure instead of silently switching back to local synthesis
+
+Currently verified source classes:
+
+- `YouTube`
+  good for direct `mpv --no-video` playback of public AI news videos
+- `Podcast RSS / MP3 enclosure`
+  for example, `The AI News Daily Brief` exposes a public RSS feed:
+  `https://feeds.podcastai.com/lzSp5oGSGEaLNzHdqUBaTh.xml`
+
+That feed already exposes direct `enclosure` audio URLs, so it works as a non-YouTube backup.
+
 ## Built-in Preset
 
 ```bash
@@ -218,6 +275,8 @@ Stored signals include:
 ## Common Codex Usage
 
 - `Use fireworks-radio to play a coding mix and fall back to YouTube if ncm-cli fails.`
+- `Play existing public audio directly in the current window. Do not open a webpage.`
+- `For AI news, do not synthesize anything. Play a real public source.`
 - `Play a 12-track mix of Elva Hsiao, Ed Sheeran, and Lady Gaga.`
 - `Choose a preset automatically from my past listening preferences.`
 - `Stop the current mix and rebuild it with faster songs.`
@@ -228,6 +287,7 @@ Stored signals include:
 - Short feedback loops beat perfect architecture.
 - Rights failures are operational facts, not bugs to deny.
 - Fallbacks should be explicit and fast.
+- Existing public audio is the default. Local synthesis is opt-in only.
 - Test tracks must be cleaned up after validation.
 
 ## Licensing Position
