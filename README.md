@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="assets/images/fireworks-radio-icon.png" alt="fireworks-radio icon" width="120" />
+
+<br />
+
 # fireworks-radio
 
 **A pragmatic Codex skill for reliable coding-session audio playback.**
@@ -9,6 +13,8 @@ When `ncm-cli` fails on source rights and Spotify CLI fails on OAuth or Premium 
 [中文文档](README.zh-CN.md) · [License](LICENSE) · [Legal Notes](LEGAL.md)
 
 </div>
+
+![fireworks-radio landing image](assets/images/fireworks-radio-landing.png)
 
 ---
 
@@ -92,8 +98,10 @@ fireworks-radio/
 ├── LEGAL.md
 ├── README.md
 ├── README.zh-CN.md
-├── docs/
-│   └── image-prompts.md
+├── assets/
+│   └── images/
+│       ├── fireworks-radio-icon.png
+│       └── fireworks-radio-landing.png
 └── scripts/
     ├── build_playlist.sh
     ├── play_mix.sh

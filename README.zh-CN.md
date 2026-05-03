@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="assets/images/fireworks-radio-icon.png" alt="fireworks-radio icon" width="120" />
+
+<br />
+
 # fireworks-radio
 
 **一个很务实的 Codex 音频播放 skill。**
@@ -9,6 +13,8 @@
 [English](README.md) · [License](LICENSE) · [法律边界](LEGAL.md)
 
 </div>
+
+![fireworks-radio landing image](assets/images/fireworks-radio-landing.png)
 
 ---
 
@@ -85,8 +91,10 @@ fireworks-radio/
 ├── LEGAL.md
 ├── README.md
 ├── README.zh-CN.md
-├── docs/
-│   └── image-prompts.md
+├── assets/
+│   └── images/
+│       ├── fireworks-radio-icon.png
+│       └── fireworks-radio-landing.png
 └── scripts/
     ├── build_playlist.sh
     ├── play_mix.sh
